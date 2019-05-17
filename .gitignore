@@ -49,3 +49,5 @@ pickle-email-*.html
 
 yarn-debug.log*
 .yarn-integrity
+
+test/dummy/db/schema.rb
