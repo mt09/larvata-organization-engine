@@ -10,6 +10,14 @@ module LarvataOrganization
             code: "company_#{uuid}"
           )
         end
+
+        def create_org(typing, name, code)
+          LarvataOrganization.organization_class.send(typing).enabled.create(
+            abbrev_name: name,
+            full_name: name,
+            code: code
+          )
+        end
       end
     end
   end
