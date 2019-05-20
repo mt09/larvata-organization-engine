@@ -3,7 +3,7 @@ module LarvataOrganization
     class Orgs
       class << self
         def create_company(uuid, name, office_address)
-          Organization.company.enabled.create(
+          LarvataOrganization.organization_class.company.enabled.create(
             uuid: uuid,
             abbrev_name: name,
             full_name: name,
