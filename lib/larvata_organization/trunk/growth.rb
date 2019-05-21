@@ -33,6 +33,22 @@ module LarvataOrganization
             }
           }
         end
+
+        def add_org_user_node(org_node, user, typing)
+          role_node = org_node.children.send(typing).first
+          user_node = LarvataOrganization::Factory::Nodes.create_user(role_node, user, typing)
+
+          {
+            user: user,
+            tree_node: {
+              node: user_node,
+              parent: {
+                organization: org_node,
+                role_node: role_node
+              }
+            }
+          }
+        end
       end
     end
   end
