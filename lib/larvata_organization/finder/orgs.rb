@@ -1,10 +1,14 @@
 module LarvataOrganization
   module Finder
     class Orgs
-      attr_reader :company_node, :typings
+      attr_reader :company_node
 
       def initialize(uuid)
         @company_node =  LarvataOrganization.tree_node_class.roots.includes(:nodeable, :children).find_by_code(uuid)
+      end
+
+      def departments()
+        company_node.children.department.enabled.includes(:nodeable)
       end
 
       class << self
