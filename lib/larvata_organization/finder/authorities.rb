@@ -7,6 +7,33 @@ module LarvataOrganization
         @company_node =  LarvataOrganization.tree_node_class.roots.includes(:nodeable, :children).find_by_code(uuid)
       end
 
+      def authority_index
+        nodes = all_user_nodes
+
+        {}.tap do |index_hash|
+          nodes.find_each do |node|
+            department_node = node&.parent&.parent
+
+            if index_hash[node.nodeable_id]
+              node_data = index_hash[node.nodeable_id]
+              node_data[:departmen] << department_node&.name
+              role_option = node.manager? ? :manager : :member
+              node_data[role_option] << department_node.code
+            else
+              index_hash[node.nodeable_id] = {
+                departmen: [node.parent&.parent&.name],
+                manager:  node.manager? ? [node.parent.parent.code] : [],
+                member: node.member? ? [node.parent.parent.code] : [],
+              }
+            end
+
+            if department_node&.code == 'headquarter'
+              index_hash[node.nodeable_id][:in_headquarter] = true
+            end
+          end
+        end.symbolize_keys
+      end
+
       def manager_users
         all_manager_users
       end
@@ -28,6 +55,10 @@ module LarvataOrganization
             }
           end
         end.symbolize_keys
+      end
+
+      def all_user_nodes
+        company_node.find_all_by_generation(3).includes(:nodeable, parent: :parent)
       end
     end
   end
