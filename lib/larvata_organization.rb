@@ -22,5 +22,6 @@ module LarvataOrganization
   require 'larvata_organization/trunk/growth'
   require 'larvata_organization/finder/orgs'
   require 'larvata_organization/finder/users'
+  require 'larvata_organization/finder/authorities'
   require 'larvata_organization/service/org_nodes'
 end
